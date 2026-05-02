@@ -12,4 +12,3 @@ duckduckgo-search==6.2.13
 ollama==0.3.3 
 python-dotenv==1.0.1 
 pyyaml==6.0.2 
-unstructured[pdf,docx]==0.15.0 
