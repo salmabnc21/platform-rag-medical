@@ -1,1 +1,14 @@
- 
+langchain==0.2.16 
+langgraph==0.2.28 
+llama-index==0.10.65 
+llama-index-vector-stores-chroma==0.1.10 
+llama-index-embeddings-huggingface==0.2.3 
+chromadb==0.5.5 
+sentence-transformers==3.1.1 
+dspy-ai==2.4.13 
+spacy==3.7.6 
+ragas==0.1.21 
+duckduckgo-search==6.2.13 
+ollama==0.3.3 
+python-dotenv==1.0.1 
+pyyaml==6.0.2 
