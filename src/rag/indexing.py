@@ -1,4 +1,3 @@
- 
 import chromadb
 from chromadb.config import Settings
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
@@ -19,4 +18,12 @@ LlamaSettings.embed_model = HuggingFaceEmbedding(
     model_name='BAAI/bge-large-en-v1.5',
     device='cpu',
     embed_batch_size=32,
+)
+from llama_index.llms.ollama import Ollama
+
+# Modèle LLM biomistral
+LlamaSettings.llm = Ollama(
+    model='cniongolo/biomistral',
+    base_url='http://localhost:11434',
+    request_timeout=120.0,
 )
