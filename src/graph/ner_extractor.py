@@ -1,6 +1,6 @@
 import spacy
 
-nlp = spacy.load('fr_core_news_lg')
+nlp = spacy.load('en_core_web_sm')
 
 def extract_medical_entities(text: str) -> dict:
     doc = nlp(text)
