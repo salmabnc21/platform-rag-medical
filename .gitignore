@@ -1,10 +1,7 @@
-rag-pfa/
-venv_rag/
-__pycache__/
-*.pyc
-.env
-data/chroma_db/
-*.gguf
-*.bin
-*.log
-.ipynb_checkpoints/
+venv_rag/ 
+.env 
+__pycache__/ 
+data/chroma_db/ 
+rag-pfa/ 
+data/models/ 
+data/chroma_db/ 

@@ -16,8 +16,7 @@ collection = chroma_client.get_or_create_collection(
 # Modèle d'embedding
 LlamaSettings.embed_model = HuggingFaceEmbedding(
     model_name='BAAI/bge-large-en-v1.5',
-    device='cpu',
-    embed_batch_size=32,
+    cache_folder='./data/models',
 )
 from llama_index.llms.ollama import Ollama
 
