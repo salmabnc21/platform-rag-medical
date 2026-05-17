@@ -22,7 +22,7 @@ from llama_index.llms.ollama import Ollama
 
 # Modèle LLM biomistral
 LlamaSettings.llm = Ollama(
-    model='cniongolo/biomistral',
+    model='mistral:7b-instruct',
     base_url='http://localhost:11434',
     request_timeout=120.0,
 )
