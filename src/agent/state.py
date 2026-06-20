@@ -10,4 +10,5 @@ class AgentState(TypedDict):
     iteration:       int
     needs_web:       bool
     memory_context:  str
+    web_used: bool
 

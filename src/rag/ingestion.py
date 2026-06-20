@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from llama_index.core import SimpleDirectoryReader, VectorStoreIndex
 from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.vector_stores.chroma import ChromaVectorStore
@@ -9,6 +12,14 @@ documents = SimpleDirectoryReader(
     input_dir='./data/documents/',
     required_exts=['.pdf', '.docx', '.txt'],
 ).load_data()
+
+print("=" * 50)
+print("NB DOCUMENTS =", len(documents))
+
+for i, doc in enumerate(documents):
+    print(f"DOC {i+1} :", doc.metadata)
+
+print("=" * 50)
 
 # Chunking sémantique
 parser = SentenceWindowNodeParser.from_defaults(window_size=3)

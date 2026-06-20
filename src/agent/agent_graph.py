@@ -2,23 +2,35 @@ from langgraph.graph import StateGraph, END
 from src.agent.state import AgentState
 from src.agent.nodes import planning_node, generation_node, web_search_node
 
-# Créer le graphe
-workflow = StateGraph(AgentState)
+def build_agent_graph():
+    """Construire le graphe agent"""
+    workflow = StateGraph(AgentState)
 
-# Ajouter les noeuds
-workflow.add_node("plan",     planning_node)
-workflow.add_node("generate", generation_node)
-workflow.add_node("web",      web_search_node)
+    workflow.add_node("plan", planning_node)
+    workflow.add_node("generate", generation_node)
+    workflow.add_node("web", web_search_node)
 
-# Définir le flux
-workflow.set_entry_point("plan")
-workflow.add_conditional_edges(
-    "plan",
-    lambda s: "web" if s["needs_web"] else "generate",
-    {"web": "web", "generate": "generate"}
-)
-workflow.add_edge("web",      "generate")
-workflow.add_edge("generate", END)
+    workflow.set_entry_point("plan")
+    workflow.add_edge("plan", "generate")
 
-# Compiler l'agent
-app = workflow.compile() 
+    def should_use_web(state):
+        if state.get("needs_web", False) and not state.get("web_used", False):
+            print("↓ Transition -> WEB_SEARCH")
+            return "web"
+        print("↓ Transition -> END")
+        return "end"
+
+    workflow.add_conditional_edges(
+        "generate",
+        should_use_web,
+        {
+            "web": "web",
+            "end": END
+        }
+    )
+
+    workflow.add_edge("web", "generate")
+
+    return workflow.compile()
+
+app = build_agent_graph()
