@@ -15,9 +15,9 @@ def build_agent_graph():
 
     def should_use_web(state):
         if state.get("needs_web", False) and not state.get("web_used", False):
-            print("↓ Transition -> WEB_SEARCH")
+            print("[nodes.py] Transition -> WEB_SEARCH")
             return "web"
-        print("↓ Transition -> END")
+        print("[nodes.py] Transition -> END")
         return "end"
 
     workflow.add_conditional_edges(
