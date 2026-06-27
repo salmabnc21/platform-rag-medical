@@ -1,4 +1,4 @@
-import chromadb
+﻿import chromadb
 from chromadb.config import Settings
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core import Settings as LlamaSettings

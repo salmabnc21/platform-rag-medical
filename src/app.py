@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -11,6 +11,7 @@ import pytesseract
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 from src.agent.agent_graph import app as agent_app
 from src.rag.query_engine import query_engine
+from src.rag.temp_rag import build_temp_index, query_temp_index
 
 st.set_page_config(
     page_title="Plateforme Médicale Intelligente",
@@ -251,6 +252,22 @@ with col1:
 
             file_label = f"{file_type_detected} uploadé : {uploaded_file.name}"
 
+            # Build temporary RAG index — only when the file changes
+            file_key = uploaded_file.name
+            if file_context.strip() and st.session_state.get("temp_rag_file") != file_key:
+                with st.spinner("Indexation du document (RAG temporaire)…"):
+                    try:
+                        client, temp_idx, n_chunks = build_temp_index(file_context)
+                        st.session_state["temp_rag_client"] = client
+                        st.session_state["temp_rag_index"] = temp_idx
+                        st.session_state["temp_rag_file"] = file_key
+                        st.markdown(
+                            f'<div class="file-success">RAG temporaire prêt · {n_chunks} chunks indexés</div>',
+                            unsafe_allow_html=True,
+                        )
+                    except Exception as ie:
+                        st.warning(f"Indexation RAG échouée ({ie}) — contexte brut utilisé en fallback.")
+
         except Exception as e:
             st.error(f"Erreur lors de la lecture du fichier : {str(e)}")
 
@@ -308,9 +325,21 @@ if submit:
         with st.spinner("Traitement en cours..."):
             try:
                 if file_context:
+                    is_ocr = (file_type_detected == "Image")
+                    if "temp_rag_index" in st.session_state:
+                        relevant_chunks = query_temp_index(
+                            st.session_state["temp_rag_index"],
+                            question,
+                            top_k=3,
+                        )
+                        if not relevant_chunks.strip():
+                            relevant_chunks = file_context[:4000]
+                    else:
+                        relevant_chunks = file_context[:4000]
+
                     result = agent_app.invoke({
                         'query': question,
-                        'retrieved_docs': [{'text': file_context[:4000]}],
+                        'retrieved_docs': [{'text': relevant_chunks, 'is_ocr': is_ocr}],
                         'answer': '',
                         'iteration': 0,
                         'needs_web': False,

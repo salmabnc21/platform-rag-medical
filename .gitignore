@@ -5,3 +5,8 @@ data/chroma_db/
 rag-pfa/ 
 data/models/ 
 data/chroma_db/ 
+
+streamlit_out.log
+streamlit_err.log
+data/test_bilan.png
+data/*.pdf

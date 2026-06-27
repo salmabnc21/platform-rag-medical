@@ -1,4 +1,4 @@
-from llama_index.core import VectorStoreIndex
+﻿from llama_index.core import VectorStoreIndex
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.core.storage.storage_context import StorageContext
 from src.rag.indexing import chroma_client
